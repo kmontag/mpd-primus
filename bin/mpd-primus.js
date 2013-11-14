@@ -28,7 +28,7 @@ if (argv.verbose) {
 } else {
   BasicLogger.setLevel('info', true);
 }
-var mpdws = require('../lib/mpdws.js');
+var mpdws = require('../lib/mpd-primus.js');
 var http = require('http');
 var httpServer = http.createServer().listen(argv['http-port'], argv['http-host'], function() {
   console.log('HTTP Server listening on port ' + argv['http-port'])

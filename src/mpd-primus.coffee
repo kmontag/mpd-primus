@@ -33,7 +33,7 @@ exports.Server = class
         @_readyCallbacks.push callback
     primus = buildPrimus httpServer
     primus.on 'connection', (spark)=>
-      logger.debug 'Connect'
+      logger.debug "Client connected - #{spark.address.ip}:#{spark.address.port}"
       addReadyCallback =>
         client = @mpdClient
 
@@ -61,9 +61,9 @@ exports.Server = class
       for event in basicEvents
         do (event)=>
           @mpdClient.on event, (args...)->
-            logger.debug event
+            logger.debug "Event: #{event}"
       @mpdClient.on 'system', (name)=>
-        logger.debug "system-#{name}"
+        logger.debug "Event: system-#{name}"
     this
 
 exports.createServer = (httpServer)-> new exports.Server httpServer
