@@ -3,6 +3,7 @@
   "version": "0.0.1-dev",
   "main": "lib/mpd-primus.js",
   "bin": "bin/mpd-primus.js",
+  "contributors": ["Kevin Montag <kmontag@cs.stanford.edu"],
   "description": "Control MPD from Primus-connected clients",
   "dependencies": {
     "basic-logger": ">= 0.4.4",
@@ -16,6 +17,10 @@
   "devDependencies": {
     "coffee-script": ">=1.6",
     "rimraf": ">=2.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kmontag/mpd-primus.git"
   },
   "scripts": {
     "pretest": "./node_modules/.bin/cake rebuild",
