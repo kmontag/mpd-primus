@@ -1,9 +1,9 @@
 {
-  "name": "mpdws",
+  "name": "mpd-primus",
   "version": "0.0.1-dev",
-  "main": "lib/mpdws.js",
-  "bin": "bin/mpdws.js",
-  "description": "Simple wrapper to send MPD messages to WebSocket-connected clients",
+  "main": "lib/mpd-primus.js",
+  "bin": "bin/mpd-primus.js",
+  "description": "Control MPD from Primus-connected clients",
   "dependencies": {
     "basic-logger": ">= 0.4.4",
     "mpd": ">=1.0.2",
@@ -15,7 +15,6 @@
   },
   "devDependencies": {
     "coffee-script": ">=1.6",
-    "debug": "~0.7.2",
     "rimraf": ">=2.2.2"
   },
   "scripts": {

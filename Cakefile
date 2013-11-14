@@ -18,7 +18,7 @@ task 'build', 'Build entire project', ->
   # Client library
   coffee.on 'exit', (status)->
     if status is 0
-      mpdws = require './lib/mpdws'
+      mpdws = require './lib/mpd-primus'
       clientLibrary = mpdws.library()
       fs.mkdir 'client', (err)->
         if not err or (err and err.code is 'EEXIST')
