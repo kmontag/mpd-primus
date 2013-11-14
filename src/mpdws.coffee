@@ -1,7 +1,20 @@
 mpd = require('mpd')
+http = require('http')
+BasicLogger = require('basic-logger')
 Primus = require('primus')
 PrimusEmitter = require("primus-emitter")
 PrimusResponder = require("primus-responder")
+
+logger = new BasicLogger()
+basicEvents = ['error', 'end', 'connect']
+
+# So we can get the same type of instance when outputting the client-side
+# library.
+buildPrimus = (httpServer)->
+  primus = new Primus(httpServer, transformer: 'websockets')
+  primus.use 'responder', PrimusResponder
+  primus.use 'emitter', PrimusEmitter
+  primus
 
 exports = {}
 exports.Server = class
@@ -18,28 +31,25 @@ exports.Server = class
         callback()
       else
         @_readyCallbacks.push callback
-    primus = new Primus(httpServer, transformer: 'websockets')
-    primus.use 'responder', PrimusResponder
+    primus = buildPrimus httpServer
     primus.on 'connection', (spark)=>
-      console.log "connect"
+      logger.debug 'Connect'
       addReadyCallback =>
         client = @mpdClient
 
         # All clients get a ready event
-        spark.emit 'ready'
+        spark.send 'ready'
 
         # Forward basic MPD events
         for event in ['error', 'end', 'connect']
           do (event)->
             client.on event, (args...)->
-              primus.emit.apply primus, [event] + args
+              spark.send.apply spark, [event] + args
 
         # System events fire twice
-        client.on 'system', (name) ->
-          console.log "system"
-          console.log name
-          primus.emit 'system', name
-          primus.emit "system-#{name}"
+        client.on 'system', (name)->
+          spark.send 'system', name
+          spark.send "system-#{name}"
 
   connect: (mpdOptions, connectCallback, errCallback)->
     @mpdClient = mpd.connect mpdOptions
@@ -47,7 +57,16 @@ exports.Server = class
       @_isReady = true
       (c()) for c in @_readyCallbacks
       connectCallback() if connectCallback?
+
+      for event in basicEvents
+        do (event)=>
+          @mpdClient.on event, (args...)->
+            logger.debug event
+      @mpdClient.on 'system', (name)=>
+        logger.debug "system-#{name}"
     this
 
 exports.createServer = (httpServer)-> new exports.Server httpServer
+exports.library = -> buildPrimus(http.createServer()).library()
+
 module.exports = exports

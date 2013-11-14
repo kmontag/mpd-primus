@@ -8,6 +8,9 @@ var argv = require('optimist')
     .describe('mpd-port', 'Port for the outgoing MPD connection')
     .describe('help', 'Show this message and exit')
     .boolean('help')
+    .describe('verbose', 'Print debug info')
+    .alias('verbose', 'v')
+    .boolean('verbose')
     .default({
         'http-port': 8080,
         'mpd-host': '127.0.0.1',
@@ -20,6 +23,12 @@ if (argv.help) {
     process.exit(0);
 }
 
+var BasicLogger = require('basic-logger');
+if (argv.verbose) {
+    BasicLogger.setLevel('debug');
+} else {
+    BasicLogger.setLevel('info', true);
+}
 var mpdws = require('../lib/mpdws.js');
 var http = require('http');
 var httpServer = http.createServer().listen(argv['http-port'], argv['http-host'], function() {

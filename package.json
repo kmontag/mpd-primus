@@ -5,11 +5,12 @@
   "bin": "bin/mpdws.js",
   "description": "Simple wrapper to send MPD messages to WebSocket-connected clients",
   "dependencies": {
+    "basic-logger": ">= 0.4.4",
     "mpd": ">=1.0.2",
     "optimist": ">=0.6.0",
-    "primus": ">=1.4.4",
-    "primus-responder": ">=1.0.0",
-    "primus-emitter": ">=1.0",
+    "primus": ">=1.4.6",
+    "primus-responder": ">=1.0.1",
+    "primus-emitter": ">=2.0.2",
     "ws": ">=0.4"
   },
   "devDependencies": {
