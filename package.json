@@ -14,6 +14,11 @@
   },
   "devDependencies": {
     "coffee-script": ">=1.6",
-    "debug": "~0.7.2"
+    "debug": "~0.7.2",
+    "rimraf": ">=2.2.2"
+  },
+  "scripts": {
+    "pretest": "./node_modules/.bin/cake rebuild",
+    "prepublish": "./node_modules/.bin/cake rebuild"
   }
 }
